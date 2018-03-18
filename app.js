@@ -4,7 +4,7 @@ const cookieParser = require('cookie-parser');
 const path = require('path');
 const _ = require('lodash');
 
-var {mongoose} = require('mongoose');
+var {mongoose} = require('./db/mongoose');
 //const {generateMessage} = require('./utils/message');
 var {Soldier} = require('./models/soldier');
 var {Admin} = require('./models/admin');
@@ -18,6 +18,8 @@ app.use(express.static(public_path));
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(bodyParser.json());
 app.use(cookieParser());
+
+
 
 app.post('/register', (req,res) => {
     var body = _.pick(req.body, ['militaryID', 'password']);
@@ -122,13 +124,13 @@ app.post('/logoutAdmin', (req, res) => {
 });
 
 
-app.post('/fetchCoordinates', (req, res) => {
-    Soldier.find({status: "live"}).toArray(function(err,data) {
+app.get('/fetchCoordinates', (req, res) => {
+    Soldier.find({},function(err,data) {
         var sendData = [];
         for(var i=0;i<data.length;i++){
             var row = {};
-            row.x = data.x;
-            row.y = data.y;
+            row.x = data[i].x;
+            row.y = data[i].y;
             sendData.append(row);
         }
         res.json(sendData);
