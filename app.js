@@ -124,14 +124,18 @@ app.post('/logoutAdmin', (req, res) => {
 });
 
 
-app.get('/fetchCoordinates', (req, res) => {
+app.post('/fetchCoordinates', (req, res) => {
     Soldier.find({},function(err,data) {
         var sendData = [];
+        console.log(data.length);
         for(var i=0;i<data.length;i++){
             var row = {};
+            console.log(data[i].x);
             row.x = data[i].x;
             row.y = data[i].y;
-            sendData.append(row);
+            console.log(row);
+            sendData.push(row);
+            console.log(sendData);
         }
         res.json(sendData);
     });
