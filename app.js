@@ -124,7 +124,14 @@ app.post('/logoutAdmin', (req, res) => {
 
 app.post('/fetchCoordinates', (req, res) => {
     Soldier.find({status: "live"}).toArray(function(err,data) {
-        res.json(data);
+        var sendData = [];
+        for(var i=0;i<data.length;i++){
+            var row = {};
+            row.x = data.x;
+            row.y = data.y;
+            sendData.append(row);
+        }
+        res.json(sendData);
     });
 });
 
